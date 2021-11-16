@@ -50,7 +50,7 @@ export const constantRoutes = [
         meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
       }
     ]
-  },
+  }
 
 ]
 
@@ -60,29 +60,29 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
-    path: '/book', 
+    path: '/book',
     component: Layout,
-    meta: { title: '图书管理', icon: 'document', roles:['admin'] },
-    redirect:'/book/create',
-    children:[
+    meta: { title: '图书管理', icon: 'document', roles: ['admin'] },
+    redirect: '/book/create',
+    children: [
       {
-        name:'bookCreate',
-        path:'/book/create',
-        component: ()=> import('@/views/book/create'),
-        meta: {title:'上传图书', icon:'edit', roles:['admin']}
+        name: 'bookCreate',
+        path: '/book/create',
+        component: () => import('@/views/book/create'),
+        meta: { title: '上传图书', icon: 'edit', roles: ['admin'] }
       },
       {
-        name:'bookEdit',
-        path:'/book/edit/:fileName',
-        component: ()=> import('@/views/book/edit'),
-        hidden:true,
-        meta: {title:'编辑图书', icon:'edit', roles:['admin'], activeMenu:'/book/list'}
+        name: 'bookEdit',
+        path: '/book/edit/:fileName',
+        component: () => import('@/views/book/edit'),
+        hidden: true,
+        meta: { title: '编辑图书', icon: 'edit', roles: ['admin'], activeMenu: '/book/list' }
       },
       {
-        name:'bookList',
-        path:'/book/list',
-        component: ()=> import('@/views/book/list'),
-        meta: {title:'图书列表', icon:'list', roles:['editor']}
+        name: 'bookList',
+        path: '/book/list',
+        component: () => import('@/views/book/list'),
+        meta: { title: '图书列表', icon: 'list', roles: ['editor'] }
       }
     ]
   },

@@ -52,13 +52,13 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
+// import { validUsername } from '@/utils/validate'
 
 export default {
   name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!value || value.length===0) {
+      if (!value || value.length === 0) {
         callback(new Error('请输入用户名'))
       } else {
         callback()
@@ -110,7 +110,7 @@ export default {
   },
   methods: {
     // checkCapslock({shiftKey,key}={}) {
-      checkCapslock(e) {
+    checkCapslock(e) {
       // console.log('e',shiftKey,key)
       // if(key &&key.length===1){
       //   if((shiftKey &&(key>='A'&&key<='Z'))||(!shiftKey&&(key>='A'&&key<='Z'))){
@@ -157,7 +157,7 @@ export default {
         if (cur !== 'redirect') {
           acc[cur] = query[cur]
         }
-          console.log('acc',acc)
+        console.log('acc', acc)
         return acc
       }, {})
     }

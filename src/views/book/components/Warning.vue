@@ -7,7 +7,7 @@
 <script>
 export default {
   name: 'Warning'
-};
+}
 </script>
 
 <style lang="scss">

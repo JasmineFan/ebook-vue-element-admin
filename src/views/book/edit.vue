@@ -1,15 +1,15 @@
 <template>
-  <detail isEdit />
+  <detail is-edit />
 </template>
 
 <script>
 import Detail from './components/Detail.vue'
 export default {
-  name: 'edit',
-  components:{
+  name: 'Edit',
+  components: {
     Detail
   }
-};
+}
 </script>
 
 <style lang="scss">

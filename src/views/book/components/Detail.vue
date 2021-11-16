@@ -4,9 +4,9 @@
       <el-button v-if="!isEdit" @click="showGuide">显示帮助</el-button>
       <el-button
         v-loading="loading"
-        @click="submitForm"
         type="success"
         style="margin-left: 10px"
+        @click="submitForm"
       >
         {{ isEdit ? "编辑电子书" : "新增电子书" }}
       </el-button>
@@ -29,8 +29,7 @@
               :maxlength="100"
               name="name"
               required
-              >书名</MDinput
-            >
+            >书名</MDinput>
           </el-form-item>
           <el-row>
             <el-col :span="12">
@@ -66,8 +65,8 @@
             <el-col :span="12">
               <el-form-item label="根文件" :label-width="labelWidth">
                 <el-input
-                  prop="rootFile"
                   v-model="postForm.rootFile"
+                  prop="rootFile"
                   placeholder="根文件"
                   disabled
                 />
@@ -136,7 +135,7 @@
             <el-col :span="24">
               <el-form-item prop="cover" label="封面" :label-width="labelWidth">
                 <a v-if="postForm.cover" :href="postForm.cover" target="_blank">
-                  <img :src="postForm.cover" class="preview-img" />
+                  <img :src="postForm.cover" class="preview-img">
                 </a>
                 <span v-else>无</span>
               </el-form-item>
@@ -152,7 +151,7 @@
                   <el-tree
                     :data="contentTree"
                     @node-click="onContentClick"
-                  ></el-tree>
+                  />
                 </div>
                 <span v-else>无</span>
               </el-form-item>
@@ -165,11 +164,11 @@
 </template>
 
 <script>
-import Sticky from "../../../components/Sticky/index";
-import Warning from "./Warning";
-import EbookUpload from "../../../components/EbookUpload";
-import MDinput from "../../../components/MDinput";
-import { createBook, getBook, updateBook } from "../../../api/book";
+import Sticky from '../../../components/Sticky/index'
+import Warning from './Warning'
+import EbookUpload from '../../../components/EbookUpload'
+import MDinput from '../../../components/MDinput'
+import { createBook, getBook, updateBook } from '../../../api/book'
 // const defaultForm = {
 //   title: "",
 //   author: "",
@@ -185,98 +184,105 @@ import { createBook, getBook, updateBook } from "../../../api/book";
 //   unzipPath: "",
 // };
 const fields = {
-  title: "标题",
-  author: "作者",
-  publisher: "出版社",
-  language: "语言",
-};
+  title: '标题',
+  author: '作者',
+  publisher: '出版社',
+  language: '语言'
+}
 
 export default {
-  name: "Detail",
+  name: 'Detail',
   components: {
     Sticky,
     Warning,
     EbookUpload,
-    MDinput,
+    MDinput
+  },
+  props: {
+    isEdit: Boolean
   },
   data() {
     const validateRequire = (rule, value, callback) => {
       // console.log(rule, value);
       if (value.length === 0) {
-        callback(new Error(fields[rule.field] + "为必须填写"));
+        callback(new Error(fields[rule.field] + '为必须填写'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     return {
       loading: false,
       postForm: {},
       fileList: [],
-      labelWidth: "120px",
+      labelWidth: '120px',
       contentTree: [],
       rules: {
         title: [{ validator: validateRequire }],
         author: [{ validator: validateRequire }],
         publisher: [{ validator: validateRequire }],
-        language: [{ validator: validateRequire }],
-      },
-    };
+        language: [{ validator: validateRequire }]
+      }
+    }
   },
-  props: {
-    isEdit: Boolean,
+  created() {
+    console.log(this.$route.params)
+    if (this.isEdit) {
+      const fileName = this.$route.params.fileName
+      this.getBookData(fileName)
+    }
   },
   methods: {
     onContentClick(data) {
-      console.log(data);
+      console.log(data)
       if (data.text) {
-        window.open(data.text);
+        window.open(data.text)
       }
     },
     showGuide() {
-      console.log("showguide");
+      console.log('showguide')
     },
     submitForm() {
-      const  onSuccess = (response)=> {
-        const { msg } = response;
+      const onSuccess = (response) => {
+        const { msg } = response
         this.$notify({
-          title: "操作成功",
+          title: '操作成功',
           message: msg,
-          type: "success",
-          duration: 2000,
-        });
-        this.loading = false;
+          type: 'success',
+          duration: 2000
+        })
+        this.loading = false
       }
       if (!this.loading) {
-        this.loading = true;
+        this.loading = true
         this.$refs.postForm.validate((valid, fields) => {
-          console.log(valid, fields);
+          console.log(valid, fields)
           if (valid) {
-            const book = Object.assign({}, this.postForm);
-            delete book.contentTree;
+            const book = Object.assign({}, this.postForm)
+            delete book.contentTree
             if (!this.isEdit) {
               createBook(book)
                 .then((response) => {
-                  onSuccess(response);
-                  this.setDefault();
+                  onSuccess(response)
+                  this.setDefault()
                 })
                 .catch(() => {
-                  this.loading = false;
-                });
+                  this.loading = false
+                })
             } else {
               updateBook(book)
                 .then((response) => {
-                  onSuccess(response);
+                  onSuccess(response)
                 })
                 .catch(() => {
-                  this.loading = false;
-                });
+                  this.loading = false
+                })
             }
           } else {
-            const message = fields[Object.keys(fields)[0]][0].message;
-            this.$message({ message, type: "error" });
-            this.loading = false;
+            const message = fields[Object.keys(fields)[0]][0].message
+            this.$message({ message, type: 'error' })
+            this.loading = false
           }
-        });
+        })
       }
     },
     setData(data) {
@@ -294,9 +300,9 @@ export default {
         coverPath,
         filePath,
         unzipPath,
-        chapterTree,
-      } = data;
-      this.contentTree = contents;
+        // chapterTree
+      } = data
+      this.contentTree = contents
       this.postForm = {
         ...this.postForm,
         title,
@@ -311,37 +317,30 @@ export default {
         fileName,
         coverPath,
         filePath,
-        unzipPath,
-      };
-      this.fileList = [{ name: originalName || fileName, url }];
+        unzipPath
+      }
+      this.fileList = [{ name: originalName || fileName, url }]
     },
     setDefault() {
       // this.postForm = Object.assign({}, defaultForm);
-      this.chapterTree = [];
-      this.fileList = [];
-      this.$refs.postForm.resetFields();
+      this.chapterTree = []
+      this.fileList = []
+      this.$refs.postForm.resetFields()
     },
     onUploadSuccess(data) {
-      console.log("onUploadSuccess", data);
-      this.setData(data);
+      console.log('onUploadSuccess', data)
+      this.setData(data)
     },
     onUploadRemove() {
-      this.setDefault();
+      this.setDefault()
     },
     getBookData(fileName) {
       getBook(fileName).then((response) => {
-        this.setData(response.data);
-      });
-    },
-  },
-  created() {
-    console.log(this.$route.params);
-    if (this.isEdit) {
-      const fileName = this.$route.params.fileName;
-      this.getBookData(fileName);
+        this.setData(response.data)
+      })
     }
-  },
-};
+  }
+}
 </script>
 
 <style lang="scss">
